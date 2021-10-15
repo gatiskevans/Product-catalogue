@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLUsersRepository;
 use App\Repositories\UsersRepository;
 use App\Twig\View;
+use Ramsey\Uuid\Uuid;
 
 class UsersController
 {
@@ -36,9 +38,17 @@ class UsersController
         //todo create login
     }
 
-    public function register(): void
+    public function registerUser(): void
     {
-        //todo create registration
+        if($_POST['password'] !== $_POST['password_confirmation']) Redirect::to('/');
+
+        $this->usersRepository->register(new User(
+            Uuid::uuid4(),
+            $_POST['email'],
+            $_POST['name'],
+            password_hash($_POST['password'], PASSWORD_DEFAULT)
+        ));
+        Redirect::to('/');
     }
 
     public function editUser(): void

@@ -30,6 +30,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 
     $r->addRoute('GET', '/login', 'UsersController@showLogin');
     $r->addRoute('GET', '/register', 'UsersController@showRegistration');
+    $r->addRoute('POST', '/register', 'UsersController@registerUser');
 
 });
 

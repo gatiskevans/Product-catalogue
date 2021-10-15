@@ -5,15 +5,15 @@ namespace App\Models;
 class User
 {
     private string $userId;
-    private string $name;
     private string $email;
+    private string $name;
     private string $password;
 
-    public function __construct(string $userId, string $name, string $email, string $password)
+    public function __construct(string $userId, string $email, string $name, string $password)
     {
         $this->userId = $userId;
-        $this->name = $name;
         $this->email = $email;
+        $this->name = $name;
         $this->password = $password;
     }
 

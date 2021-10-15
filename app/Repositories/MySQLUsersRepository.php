@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\DD;
+use App\Models\User;
 use App\MySQLConnect\MySQLConnect;
 
 class MySQLUsersRepository extends MySQLConnect implements UsersRepository
@@ -12,9 +14,15 @@ class MySQLUsersRepository extends MySQLConnect implements UsersRepository
         // TODO: Implement login() method.
     }
 
-    public function register(): void
+    public function register(User $user): void
     {
-        // TODO: Implement register() method.
+        $sql = "INSERT INTO users (user_id, email, name, password) VALUES (?, ?, ?, ?)";
+        $this->connect()->prepare($sql)->execute([
+            $user->getUserId(),
+            $user->getEmail(),
+            $user->getName(),
+            $user->getPassword()
+        ]);
     }
 
     public function edit(string $id): void
