@@ -15,14 +15,22 @@ $twigEngine = new Environment($loader);
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'ProductsController@index');
+
     $r->addRoute('GET', '/products', 'ProductsController@index');
     $r->addRoute('GET', '/product/{id}', 'ProductsController@showProduct');
+
     $r->addRoute('GET', '/add', 'ProductsController@showAddProduct');
     $r->addRoute('POST', '/add', 'ProductsController@addProduct');
+
     $r->addRoute('GET', '/edit/{id}', 'ProductsController@showEditProduct');
     $r->addRoute('POST', '/edit/{id}', 'ProductsController@editProduct');
+
     $r->addRoute('POST', '/delete/{id}', 'ProductsController@deleteProduct');
     $r->addRoute('GET', '/search', 'ProductsController@searchByCategory');
+
+    $r->addRoute('GET', '/login', 'UsersController@showLogin');
+    $r->addRoute('GET', '/register', 'UsersController@showRegistration');
+
 });
 
 // Fetch method and URI from somewhere

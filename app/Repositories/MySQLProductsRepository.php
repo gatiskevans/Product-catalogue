@@ -84,7 +84,6 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
 
     public function search(array $query): ProductsCollection
     {
-        // TODO: Implement search() method.
         $productsCollection = new ProductsCollection();
 
         $query = $query['search'] ?? null;

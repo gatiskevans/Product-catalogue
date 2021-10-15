@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\DD;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
 use App\Repositories\ProductsRepository;
@@ -73,7 +72,6 @@ class ProductsController
 
     public function searchByCategory(): View
     {
-        //todo create functionality to search products based on category
         $products = $this->productsRepository->search($_GET);
         return new View('Products/products.twig', ['products' => $products]);
     }
