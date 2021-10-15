@@ -1,0 +1,24 @@
+{% extends 'app.twig' %}
+
+{% block contents %}
+
+    <h1>{{ product.getTitle }}</h1>
+
+    <ul><b>ID:</b> {{ product.getId }} </ul>
+    <ul><b>Title:</b> {{ product.getTitle }} </ul>
+    <ul><b>Category:</b> {{ product.getCategory }} </ul>
+    <ul><b>Quantity:</b> {{ product.getQuantity }} </ul>
+    <ul><b>Created At:</b> {{ product.getCreatedAt }} </ul>
+
+    {% if product.getEditedAt != null %}
+        <ul><b>Edited At:</b> {{ product.getEditedAt }} </ul>
+    {% endif %}
+
+    <a href="/edit/{{ product.getId }}">Edit</a><br/><br/>
+
+    <form method="post" action="/delete/{{ product.getId }}">
+        <b><label for="delete">Delete</label></b>
+        <button type="submit" id="delete">X</button>
+    </form>
+
+{% endblock %}

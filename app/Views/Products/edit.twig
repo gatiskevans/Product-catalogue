@@ -1,0 +1,36 @@
+{% extends 'app.twig' %}
+{% block contents %}
+
+    <h1>{{ product.getTitle }}</h1>
+
+    <ul><b>ID:</b> {{ product.getId }} </ul>
+    <ul><b>Title:</b> {{ product.getTitle }} </ul>
+    <ul><b>Category:</b> {{ product.getCategory }} </ul>
+    <ul><b>Quantity:</b> {{ product.getQuantity }} </ul>
+    <ul><b>Created At:</b> {{ product.getCreatedAt }} </ul>
+
+    {% if product.getEditedAt != null %}
+        <ul><b>Edited At:</b> {{ product.getEditedAt }} </ul>
+    {% endif %}
+
+    <form method="post" action="/edit/{{ product.getId }}">
+        <label for="title">Title: </label>
+        <input type="text" id="title" name="title" value="{{ product.getTitle }}" /><br/>
+
+        <label for="category">Category: </label>
+        <input type="text" id="category" name="category" value="{{ product.getCategory }}" /><br/>
+
+        <label for="quantity">Quantity: </label>
+        <input type="text" id="quantity" name="quantity" value="{{ product.getQuantity }}" /><br/><br/>
+
+        <input type="submit" name="submit" value="Edit"/>
+    </form>
+
+    <a href="/product/{{ product.getId }}">Hide</a><br/><br/>
+
+    <form method="post" action="/delete/{{ product.getId }}">
+        <b><label for="delete">Delete</label></b>
+        <button type="submit" id="delete">X</button>
+    </form>
+
+{% endblock %}

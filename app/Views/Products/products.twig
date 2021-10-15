@@ -1,0 +1,28 @@
+{% extends 'app.twig' %}
+
+{% block contents %}
+
+    <form method="get" action="/search">
+        <label for="search">Search By Category: </label><br/>
+        <input type="text" id="search" name="search"><br/>
+        <input type="submit" name="submit" value="Search" />
+    </form>
+
+    <br/>
+
+    {% if products.getProducts|length > 0 %}
+
+    {% for product in products.getProducts %}
+        <ul>
+            <li><b>Title:</b> <a href="product/{{ product.getId }}">{{ product.getTitle }}</a></li>
+            <li><b>Category:</b> {{ product.getCategory }}</li>
+            <li><b>Quantity:</b> {{ product.getQuantity }}</li>
+        </ul>
+
+    {% endfor %}
+
+    {% else %}
+        <ul><b>The List of Products Is Empty</b></ul>
+    {% endif %}
+
+{% endblock %}
