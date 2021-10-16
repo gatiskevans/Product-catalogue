@@ -16,6 +16,8 @@ class MySQLUsersRepository extends MySQLConnect implements UsersRepository
         $statement->execute([$email]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
+        if(!$user) return null;
+
         return $this->buildUser($user);
     }
 
@@ -25,6 +27,8 @@ class MySQLUsersRepository extends MySQLConnect implements UsersRepository
         $statement = $this->connect()->prepare($sql);
         $statement->execute([$id]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if(!$user) return null;
 
         return $this->buildUser($user);
     }

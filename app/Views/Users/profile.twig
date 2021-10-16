@@ -16,6 +16,6 @@
 
     <br/>
     <form action="/delete" method="post">
-        <button type="submit"><b style="color: red">Delete User</b> </button>
+        <button type="submit" onclick="window.confirm('Are you sure?')"><b style="color: red">Delete User</b> </button>
     </form>
 {% endblock %}

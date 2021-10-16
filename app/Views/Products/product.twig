@@ -10,7 +10,7 @@
 
     <form method="post" action="/delete/{{ product.getId }}">
         <b><label for="delete">Delete</label></b>
-        <button type="submit" id="delete">X</button>
+        <button type="submit" id="delete" onclick="window.confirm('Are you sure?')">X</button>
     </form>
 
 {% endblock %}

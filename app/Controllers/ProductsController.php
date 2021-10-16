@@ -2,12 +2,15 @@
 
 namespace App\Controllers;
 
+use App\DD;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
 use App\Repositories\ProductsRepository;
 use App\Twig\View;
+use App\Validation\FormValidationException;
+use App\Validation\ProductsValidator;
 
-class ProductsController
+class ProductsController extends ProductsValidator
 {
     private ProductsRepository $productsRepository;
 
@@ -48,8 +51,18 @@ class ProductsController
 
     public function addProduct(): void
     {
-        $this->productsRepository->add($_POST);
-        Redirect::to('/');
+        try{
+            $this->validateProduct($_POST);
+
+            $this->productsRepository->add($_POST);
+            Redirect::to('/');
+
+        } catch(FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
+            Redirect::to('/add');
+        }
+
     }
 
     public function editProduct(array $vars): void
@@ -57,8 +70,17 @@ class ProductsController
         $id = $vars['id'] ?? null;
         if($id === null) Redirect::to('/');
 
-        $this->productsRepository->edit($_POST, $id);
-        Redirect::to('/');
+        try {
+            $this->validateProduct($_POST);
+
+            $this->productsRepository->edit($_POST, $id);
+            Redirect::to('/');
+        } catch(FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
+            $location = "/edit/" . $id;
+            Redirect::to($location);
+        }
     }
 
     public function deleteProduct(array $vars): void

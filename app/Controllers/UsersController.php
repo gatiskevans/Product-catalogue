@@ -8,9 +8,11 @@ use App\Redirect\Redirect;
 use App\Repositories\MySQLUsersRepository;
 use App\Repositories\UsersRepository;
 use App\Twig\View;
+use App\Validation\FormValidationException;
+use App\Validation\UsersValidator;
 use Ramsey\Uuid\Uuid;
 
-class UsersController
+class UsersController extends UsersValidator
 {
     private UsersRepository $usersRepository;
 
@@ -38,29 +40,42 @@ class UsersController
 
     public function login(): void
     {
-        $user = $this->usersRepository->getByEmail($_POST['email']);
 
-        if($user !== null && password_verify($_POST['password'], $user->getPassword())){
+        try {
+            $user = $this->usersRepository->getByEmail($_POST['email']);
+            $this->validateLogin($_POST, $user);
+
             $_SESSION['id'] = $user->getUserId();
             $_SESSION['name'] = $user->getName();
             $_SESSION['email'] = $user->getEmail();
             Redirect::to('/');
-        } else {
+        } catch(FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
             Redirect::to('/login');
         }
     }
 
     public function registerUser(): void
     {
-        if($_POST['password'] !== $_POST['password_confirmation']) Redirect::to('/');
+        try {
+            $user = $this->usersRepository->getByEmail($_POST['email']);
+            $this->validateRegistration($_POST, $user);
 
-        $this->usersRepository->register(new User(
-            Uuid::uuid4(),
-            $_POST['email'],
-            $_POST['name'],
-            password_hash($_POST['password'], PASSWORD_DEFAULT)
-        ));
-        Redirect::to('/');
+            $this->usersRepository->register(new User(
+                Uuid::uuid4(),
+                $_POST['email'],
+                $_POST['name'],
+                password_hash($_POST['password'], PASSWORD_DEFAULT)
+            ));
+
+            Redirect::to('/');
+        } catch (FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
+            Redirect::to('/register');
+        }
+
     }
 
     public function editUser(): void
