@@ -6,9 +6,9 @@ use App\Models\User;
 
 interface UsersRepository
 {
-    public function login(string $email): void;
+    public function getByEmail(string $email): ?User;
+    public function getById(string $id): ?User;
     public function register(User $user): void;
-    public function edit(string $id): void;
+    public function edit(array $info, string $id): void;
     public function delete(string $id): void;
-    public function logout(string $id): void;
 }

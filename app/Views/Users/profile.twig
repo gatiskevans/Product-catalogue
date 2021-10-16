@@ -1,0 +1,21 @@
+{% extends 'app.twig' %}
+
+{% block contents %}
+
+    {% include 'welcome.twig' %}
+
+    <form action="/profile" method="post">
+        <label for="email">Change Email: </label>
+        <input type="email" id="email" name="email" value="{{ user.getEmail }}"/><br/>
+
+        <label for="name">Change Name: </label>
+        <input type="text" id="name" name="name" value="{{ user.getName }}"/><br/>
+
+        <input type="submit" value="Edit"/>
+    </form>
+
+    <br/>
+    <form action="/delete" method="post">
+        <button type="submit"><b style="color: red">Delete User</b> </button>
+    </form>
+{% endblock %}

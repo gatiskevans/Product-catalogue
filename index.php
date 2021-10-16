@@ -12,6 +12,7 @@ session_start();
 //Twig Implementation
 $loader = new FilesystemLoader('app/Views');
 $twigEngine = new Environment($loader);
+$twigEngine->addGlobal('session', $_SESSION);
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'ProductsController@index');
@@ -29,8 +30,15 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/search', 'ProductsController@searchByCategory');
 
     $r->addRoute('GET', '/login', 'UsersController@showLogin');
+    $r->addRoute('POST', '/login', 'UsersController@login');
+    $r->addRoute('GET', '/logout', 'UsersController@logout');
+
     $r->addRoute('GET', '/register', 'UsersController@showRegistration');
     $r->addRoute('POST', '/register', 'UsersController@registerUser');
+
+    $r->addRoute('GET', '/profile', 'UsersController@showEdit');
+    $r->addRoute('POST', '/profile', 'UsersController@editUser');
+    $r->addRoute('POST', '/delete', 'UsersController@deleteUser');
 
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\DD;
 use App\Models\User;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLUsersRepository;
@@ -30,12 +31,23 @@ class UsersController
 
     public function showEdit(): View
     {
-        //todo create view for editing user
+        $user = $this->usersRepository->getById($_SESSION['id']);
+
+        return new View('Users/profile.twig', ['user' => $user]);
     }
 
     public function login(): void
     {
-        //todo create login
+        $user = $this->usersRepository->getByEmail($_POST['email']);
+
+        if($user !== null && password_verify($_POST['password'], $user->getPassword())){
+            $_SESSION['id'] = $user->getUserId();
+            $_SESSION['name'] = $user->getName();
+            $_SESSION['email'] = $user->getEmail();
+            Redirect::to('/');
+        } else {
+            Redirect::to('/login');
+        }
     }
 
     public function registerUser(): void
@@ -53,16 +65,22 @@ class UsersController
 
     public function editUser(): void
     {
-        //todo create functionality to edit users information
+        $this->usersRepository->edit($_POST, $_SESSION['id']);
+        Redirect::to('/');
     }
 
     public function deleteUser(): void
     {
-        //todo create functionality to delete user
+        $this->usersRepository->delete($_SESSION['id']);
+        $this->logout();
+        Redirect::to('/');
     }
 
     public function logout(): void
     {
-        //todo create logout functionality for user
+        unset($_SESSION['id']);
+        unset($_SESSION['email']);
+        unset($_SESSION['name']);
+        Redirect::to('/');
     }
 }

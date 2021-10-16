@@ -2,17 +2,9 @@
 
 {% block contents %}
 
-    <h1>{{ product.getTitle }}</h1>
+    {% include 'welcome.twig' %}
 
-    <ul><b>ID:</b> {{ product.getId }} </ul>
-    <ul><b>Title:</b> {{ product.getTitle }} </ul>
-    <ul><b>Category:</b> {{ product.getCategory }} </ul>
-    <ul><b>Quantity:</b> {{ product.getQuantity }} </ul>
-    <ul><b>Created At:</b> {{ product.getCreatedAt }} </ul>
-
-    {% if product.getEditedAt != null %}
-        <ul><b>Edited At:</b> {{ product.getEditedAt }} </ul>
-    {% endif %}
+    {% include 'Products/productInfo.twig' %}
 
     <a href="/edit/{{ product.getId }}">Edit</a><br/><br/>
 
