@@ -1,6 +1,7 @@
 <?php
 
 use App\DD;
+use App\Models\Product;
 use App\Twig\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -13,6 +14,7 @@ session_start();
 $loader = new FilesystemLoader('app/Views');
 $twigEngine = new Environment($loader);
 $twigEngine->addGlobal('session', $_SESSION);
+$twigEngine->addGlobal('categories', Product::CATEGORIES);
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'ProductsController@index');
@@ -78,3 +80,4 @@ switch ($routeInfo[0]) {
 }
 
 unset($_SESSION['_errors']);
+unset($_SESSION['message']);

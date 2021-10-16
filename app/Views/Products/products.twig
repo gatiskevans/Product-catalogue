@@ -2,30 +2,33 @@
 
 {% block contents %}
 
+    {% include 'message.twig' %}
     {% include 'welcome.twig' %}
     {% include 'errors.twig' %}
 
-    <form method="get" action="/search">
-        <label for="search">Search By Category: </label><br/>
-        <input type="text" id="search" name="search"><br/>
-        <input type="submit" name="submit" value="Search" />
-    </form>
+    {% if session.id is defined %}
 
-    <br/>
+        {% include 'Products/search.twig' %}
 
-    {% if products.getProducts|length > 0 %}
+        <br/>
 
-    {% for product in products.getProducts %}
-        <ul>
-            <li><b>Title:</b> <a href="product/{{ product.getId }}">{{ product.getTitle }}</a></li>
-            <li><b>Category:</b> {{ product.getCategory }}</li>
-            <li><b>Quantity:</b> {{ product.getQuantity }}</li>
-        </ul>
+        {% if products.getProducts|length > 0 %}
 
-    {% endfor %}
+        {% for product in products.getProducts %}
+            <ul>
+                <li><b>Title:</b> <a href="product/{{ product.getId }}">{{ product.getTitle }}</a></li>
+                <li><b>Category:</b> {{ product.getCategory }}</li>
+                <li><b>Quantity:</b> {{ product.getQuantity }}</li>
+            </ul>
+
+        {% endfor %}
+
+        {% else %}
+            <ul><b>The List of Products Is Empty</b></ul>
+        {% endif %}
 
     {% else %}
-        <ul><b>The List of Products Is Empty</b></ul>
+        <ul><b>You Must Be Logged In To View Products</b></ul>
     {% endif %}
 
 {% endblock %}

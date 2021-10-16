@@ -14,9 +14,9 @@ abstract class UsersValidator
         return $this->errors;
     }
 
-    public function validateRegistration(array $data, ?User $user): void
+    public function validateUserData(array $data, ?User $user): void
     {
-        if($user)
+        if($user && !isset($_SESSION['id']))
         {
             $this->errors['user'] = "User with this email already exists";
         }

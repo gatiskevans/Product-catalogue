@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
@@ -27,6 +28,19 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             $result['created_at'],
             $result['edited_at'],
         );
+    }
+
+    public function getByTitle(array $product): bool
+    {
+        $sql = "SELECT * FROM products WHERE title=?";
+        $statement = $this->connect()->prepare($sql);
+        $statement->execute([$product['title']]);
+
+        if($statement->rowCount() > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public function getAll(): ProductsCollection
@@ -82,18 +96,20 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $this->connect()->prepare($sql)->execute([$id]);
     }
 
-    public function search(array $query): ProductsCollection
+    public function search(string $query): ProductsCollection
     {
         $productsCollection = new ProductsCollection();
 
-        $query = $query['search'] ?? null;
-        if(empty($query)) Redirect::to('/');
-
-        $sql = "SELECT * FROM products WHERE category=?";
-        $statement = $this->connect()->prepare($sql);
-        $statement->execute([$query]);
-
-        if($statement->rowCount() <= 0) Redirect::to('/');
+        if($query === 'all')
+        {
+            $sql = "SELECT * FROM products";
+            $statement = $this->connect()->prepare($sql);
+            $statement->execute();
+        } else {
+            $sql = "SELECT * FROM products WHERE category=?";
+            $statement = $this->connect()->prepare($sql);
+            $statement->execute([$query]);
+        }
 
         foreach($statement->fetchAll(PDO::FETCH_ASSOC) as $row){
             $productsCollection->add(new Product(
@@ -105,7 +121,6 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
                 $row['edited_at'],
             ));
         }
-
         return $productsCollection;
     }
 }

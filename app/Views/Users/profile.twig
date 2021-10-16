@@ -3,6 +3,8 @@
 {% block contents %}
 
     {% include 'welcome.twig' %}
+    {% include 'errors.twig' %}
+    {% include 'message.twig' %}
 
     <form action="/profile" method="post">
         <label for="email">Change Email: </label>
@@ -10,6 +12,12 @@
 
         <label for="name">Change Name: </label>
         <input type="text" id="name" name="name" value="{{ user.getName }}"/><br/>
+
+        <label for="password">Enter Password: </label>
+        <input type="password" id="password" name="password" /><br/>
+
+        <label for="password_confirmation">Password Again: </label>
+        <input type="password" id="password_confirmation" name="password_confirmation" /><br/>
 
         <input type="submit" value="Edit"/>
     </form>

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\DD;
+
 class Product
 {
     private string $id;
     private string $title;
-    private ?string $category = '';
+    private string $category;
     private int $quantity;
     private string $createdAt;
     private ?string $editedAt;
@@ -38,7 +40,7 @@ class Product
     public function __construct(
         string $id,
         string $title,
-        ?string $category,
+        string $category,
         int $quantity,
         string $createdAt,
         ?string $editedAt = null
@@ -46,7 +48,7 @@ class Product
     {
         $this->id = $id;
         $this->title = $title;
-        $this->setCategory($category);
+        $this->setCategory(strtolower($category));
         $this->quantity = $quantity;
         $this->createdAt = $createdAt;
         $this->editedAt = $editedAt;
@@ -84,7 +86,11 @@ class Product
 
     public function setCategory(string $category): void
     {
-        if(in_array($category, self::CATEGORIES)) return;
+        if(in_array($category, self::CATEGORIES))
+        {
+            $this->category = $category;
+            return;
+        }
         $this->category = self::OTHERS;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Categories\Categories;
 use App\DD;
+use App\Models\Product;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
 use App\Repositories\ProductsRepository;
@@ -52,7 +54,8 @@ class ProductsController extends ProductsValidator
     public function addProduct(): void
     {
         try{
-            $this->validateProduct($_POST);
+            $productExists = $this->productsRepository->getByTitle($_POST);
+            $this->validateProduct($_POST, $productExists);
 
             $this->productsRepository->add($_POST);
             Redirect::to('/');
@@ -94,7 +97,14 @@ class ProductsController extends ProductsValidator
 
     public function searchByCategory(): View
     {
-        $products = $this->productsRepository->search($_GET);
-        return new View('Products/products.twig', ['products' => $products]);
+        try {
+            $this->validateSearch($_GET);
+            $products = $this->productsRepository->search($_GET['category']);
+        } catch (FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
+            Redirect::to('/');
+        }
+        return new View('Products/products.twig', ['products' => &$products]);
     }
 }

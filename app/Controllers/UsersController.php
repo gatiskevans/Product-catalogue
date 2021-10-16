@@ -48,6 +48,7 @@ class UsersController extends UsersValidator
             $_SESSION['id'] = $user->getUserId();
             $_SESSION['name'] = $user->getName();
             $_SESSION['email'] = $user->getEmail();
+            $_SESSION['message'] = "Login Successful!";
             Redirect::to('/');
         } catch(FormValidationException $exception)
         {
@@ -60,7 +61,7 @@ class UsersController extends UsersValidator
     {
         try {
             $user = $this->usersRepository->getByEmail($_POST['email']);
-            $this->validateRegistration($_POST, $user);
+            $this->validateUserData($_POST, $user);
 
             $this->usersRepository->register(new User(
                 Uuid::uuid4(),
@@ -68,6 +69,8 @@ class UsersController extends UsersValidator
                 $_POST['name'],
                 password_hash($_POST['password'], PASSWORD_DEFAULT)
             ));
+
+            $_SESSION['message'] = "Registration Successful!";
 
             Redirect::to('/');
         } catch (FormValidationException $exception)
@@ -80,15 +83,25 @@ class UsersController extends UsersValidator
 
     public function editUser(): void
     {
-        $this->usersRepository->edit($_POST, $_SESSION['id']);
-        Redirect::to('/');
+        try {
+            $user = $this->usersRepository->getById($_SESSION['id']);
+            $this->validateUserData($_POST, $user);
+            $this->usersRepository->edit($_POST, $_SESSION['id']);
+            $_SESSION['message'] = "Information Updated Successfully!";
+            Redirect::to('/profile');
+        } catch (FormValidationException $exception)
+        {
+            $_SESSION['_errors'] = $this->getErrors();
+            Redirect::to('/profile');
+        }
+
     }
 
     public function deleteUser(): void
     {
         $this->usersRepository->delete($_SESSION['id']);
+        $_SESSION['message'] = "User Deleted Successfully!";
         $this->logout();
-        Redirect::to('/');
     }
 
     public function logout(): void

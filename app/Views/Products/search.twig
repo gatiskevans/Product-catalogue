@@ -1,0 +1,12 @@
+<form method="get" action="/search">
+
+    <label for="category">Search By Category: </label>
+    <select id="category" name="category">
+        <option value="all">all</option>
+        {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" name="submit" value="Search" />
+</form>

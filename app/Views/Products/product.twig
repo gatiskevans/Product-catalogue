@@ -6,11 +6,13 @@
 
     {% include 'Products/productInfo.twig' %}
 
-    <a href="/edit/{{ product.getId }}">Edit</a><br/><br/>
-
-    <form method="post" action="/delete/{{ product.getId }}">
-        <b><label for="delete">Delete</label></b>
-        <button type="submit" id="delete" onclick="window.confirm('Are you sure?')">X</button>
+    <form method="get" action="/edit/{{ product.getId }}">
+        <b><label for="edit"></label></b>
+        <button type="submit" id="edit">Edit</button>
     </form>
+
+    <br/><br/>
+
+    {% include 'Products/delete.twig' %}
 
 {% endblock %}

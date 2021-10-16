@@ -11,20 +11,29 @@
         <label for="title">Title: </label>
         <input type="text" id="title" name="title" value="{{ product.getTitle }}" /><br/>
 
-        <label for="category">Category: </label>
-        <input type="text" id="category" name="category" value="{{ product.getCategory }}" /><br/>
-
         <label for="quantity">Quantity: </label>
-        <input type="text" id="quantity" name="quantity" value="{{ product.getQuantity }}" /><br/><br/>
+        <input type="text" id="quantity" name="quantity" value="{{ product.getQuantity }}" /><br/>
 
-        <input type="submit" name="submit" value="Edit"/>
+        <label for="category">Category: </label>
+        <select id="category" name="category">
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+
+        <br/><br/>
+
+        <input type="submit" name="submit" value="Confirm"/>
     </form>
 
-    <a href="/product/{{ product.getId }}">Hide</a><br/><br/>
-
-    <form method="post" action="/delete/{{ product.getId }}">
-        <b><label for="delete">Delete</label></b>
-        <button type="submit" id="delete">X</button>
+    <br/>
+    <form method="get" action="/product/{{ product.getId }}">
+        <b><label for="hide"></label></b>
+        <button type="submit" id="hide">Hide</button>
     </form>
+
+    <br/><br/>
+
+    {% include 'Products/delete.twig' %}
 
 {% endblock %}
