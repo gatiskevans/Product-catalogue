@@ -21,7 +21,7 @@ class ProductsController extends ProductsValidator
     public function index(): View
     {
         if(!isset($_SESSION['id'])){
-            return new View('Products/products.twig');
+            return new View('Users/login.twig');
         }
         $products = $this->productsRepository->getAll($_SESSION['id']);
         return new View('Products/products.twig', ['products' => $products]);
@@ -29,6 +29,7 @@ class ProductsController extends ProductsValidator
 
     public function showAddProduct(): View
     {
+        if(!isset($_SESSION['id'])) Redirect::to('/');
         return new View('Products/add.twig');
     }
 
