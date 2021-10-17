@@ -78,7 +78,9 @@ class ProductsController extends ProductsValidator
             $this->validateProduct($_POST);
 
             $this->productsRepository->edit($_POST, $id);
-            Redirect::to('/');
+            $_SESSION['message'] = "Edited Successfully!";
+            $location = "/product/" . $id;
+            Redirect::to($location);
         } catch(FormValidationException $exception)
         {
             $_SESSION['_errors'] = $this->getErrors();
