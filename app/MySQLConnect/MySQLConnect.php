@@ -4,7 +4,7 @@ namespace App\MySQLConnect;
 
 use PDO;
 
-class MySQLConnect
+abstract class MySQLConnect
 {
     private string $host = '127.0.0.1';
     private string $user = 'root';

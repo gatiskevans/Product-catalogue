@@ -72,7 +72,7 @@ class UsersController extends UsersValidator
 
             $_SESSION['message'] = "Registration Successful!";
 
-            Redirect::to('/');
+            Redirect::to('/login');
         } catch (FormValidationException $exception)
         {
             $_SESSION['_errors'] = $this->getErrors();
