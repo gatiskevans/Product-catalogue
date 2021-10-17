@@ -1,0 +1,100 @@
+.container {
+    max-width: 1500px;
+    margin: auto;
+    border: 2px solid black;
+    border-radius: 6px;
+    inline-size: max-content;
+    padding: 1.5rem 2rem;
+    background-image: linear-gradient(#C0C0C0, #D3D3D3);
+}
+
+input, select, button {
+    border-radius: 6px;
+    border: 2px solid black;
+}
+
+div.form {
+    text-align: right;
+}
+
+input {
+    margin: 0.2rem;
+    padding: 0.2rem;
+}
+
+button, label, input.submit {
+    font-weight: bold;
+}
+
+button:hover, input.submit:hover {
+    color: darkgreen;
+}
+
+a.link {
+    background-color: #606060;
+    border: 2px solid black;
+    padding: 0.2rem 0.1rem;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.delete {
+    color: red;
+    font-weight: bold;
+}
+
+.delete:hover {
+    color: darkred;
+}
+
+a.link:hover {
+    color: silver;
+}
+
+a.title {
+    color: green;
+    font-weight: bold;
+    border-radius: 6px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+a.title:hover {
+    color: darkgreen;
+}
+
+.welcome {
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 0.5rem 0.3rem;
+    background-image: linear-gradient(#A9A9A9, #D0D0D0);
+}
+
+.products {
+    background-image: linear-gradient(#A9A9A9, #D0D0D0);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.editProduct {
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 1rem 1rem;
+}
+
+.productInfo {
+    background-image: linear-gradient(#A9A9A9, #D0D0D0);
+    margin: 1rem 0;
+    border: 2px solid black;
+    border-radius: 6px;
+    padding: 0 1rem 1rem 1rem;
+}
+
+.detail {
+    padding: 0.5rem 0;
+}

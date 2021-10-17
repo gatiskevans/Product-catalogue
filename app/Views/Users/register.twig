@@ -6,19 +6,21 @@
     {% include 'errors.twig' %}
 
     <form action="/register" method="post">
-        <label for="email">Enter Email: </label>
-        <input type="email" id="email" name="email" placeholder="example@example.com"/><br/>
+        <div class="form">
+            <label for="email">Enter Email: </label>
+            <input type="email" id="email" name="email" placeholder="example@example.com"/><br/>
 
-        <label for="name">Enter Name: </label>
-        <input type="text" id="name" name="name" /><br/>
+            <label for="name">Enter Name: </label>
+            <input type="text" id="name" name="name" /><br/>
 
-        <label for="password">Enter Password: </label>
-        <input type="password" id="password" name="password" /><br/>
+            <label for="password">Enter Password: </label>
+            <input type="password" id="password" name="password" /><br/>
 
-        <label for="password_confirmation">Enter Password Again: </label>
-        <input type="password" id="password_confirmation" name="password_confirmation" /><br/>
+            <label for="password_confirmation">Enter Password Again: </label>
+            <input type="password" id="password_confirmation" name="password_confirmation" /><br/>
 
-        <input type="submit" name="Submit" value="Register" /><br/>
+            <input type="submit" name="Submit" class="submit" value="Register" /><br/>
+        </div>
     </form>
 
 {% endblock %}

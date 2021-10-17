@@ -84,7 +84,7 @@ abstract class UsersValidator
             $this->errors['email'] = "Email is required";
         }
 
-        if($user && !password_verify($data['password'], $user->getPassword()))
+        if($user && !password_verify($data['password'], $user->getPassword()) || $data['password'] < 6)
         {
             $this->errors['password'] = "Wrong password";
         }

@@ -6,24 +6,28 @@
     {% include 'errors.twig' %}
     {% include 'message.twig' %}
 
-    <form action="/profile" method="post">
-        <label for="email">Change Email: </label>
-        <input type="email" id="email" name="email" value="{{ user.getEmail }}"/><br/>
+    <div class="form">
 
-        <label for="name">Change Name: </label>
-        <input type="text" id="name" name="name" value="{{ user.getName }}"/><br/>
+        <form action="/profile" method="post">
+            <label for="email">Change Email: </label>
+            <input type="email" id="email" name="email" value="{{ user.getEmail }}"/><br/>
 
-        <label for="password">Enter Password: </label>
-        <input type="password" id="password" name="password" /><br/>
+            <label for="name">Change Name: </label>
+            <input type="text" id="name" name="name" value="{{ user.getName }}"/><br/>
 
-        <label for="password_confirmation">Password Again: </label>
-        <input type="password" id="password_confirmation" name="password_confirmation" /><br/>
+            <label for="password">Enter Password: </label>
+            <input type="password" id="password" name="password" /><br/>
 
-        <input type="submit" value="Edit"/>
-    </form>
+            <label for="password_confirmation">Password Again: </label>
+            <input type="password" id="password_confirmation" name="password_confirmation" /><br/>
+
+            <input type="submit" class="submit" value="Edit"/>
+        </form>
+
+    </div>
 
     <br/>
     <form action="/delete" method="post">
-        <button type="submit" onclick="window.confirm('Are you sure?')"><b style="color: red">Delete User</b> </button>
+        <button type="submit" onclick="window.confirm('Are you sure?')"><div class="delete">Delete User</div> </button>
     </form>
 {% endblock %}

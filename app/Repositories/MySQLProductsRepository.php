@@ -6,7 +6,6 @@ use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
-use App\Redirect\Redirect;
 use Carbon\Carbon;
 use PDO;
 use Ramsey\Uuid\Uuid;
@@ -102,11 +101,11 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
 
         if($query === 'all')
         {
-            $sql = "SELECT * FROM products";
+            $sql = "SELECT * FROM products ORDER BY created_at DESC";
             $statement = $this->connect()->prepare($sql);
             $statement->execute();
         } else {
-            $sql = "SELECT * FROM products WHERE category=?";
+            $sql = "SELECT * FROM products WHERE category=? ORDER BY created_at DESC";
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$query]);
         }

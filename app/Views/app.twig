@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
     <title>Product Catalogue</title>
+    <link rel="stylesheet" type="text/css" href="/app/Views/Style/style.css" />
 </head>
 <body>
+
+<div class="container">
 
 {% block contents %}{% endblock %}
 
 <br/>
-<br/>
 
-<a href="/">Home</a>
-<a href="/add">Add Product</a>
+<a class="link" href="/">Home</a>
+
+{% if session.id is defined %}
+    <a class="link" href="/add">Add Product</a>
+{% endif %}
+
+</div>
 
 </body>
 </html>

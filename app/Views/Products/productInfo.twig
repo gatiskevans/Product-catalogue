@@ -1,11 +1,13 @@
-<h1>{{ product.getTitle }}</h1>
+<div class="productInfo">
 
-<ul><b>ID:</b> {{ product.getId }} </ul>
-<ul><b>Title:</b> {{ product.getTitle }} </ul>
-<ul><b>Category:</b> {{ product.getCategory }} </ul>
-<ul><b>Quantity:</b> {{ product.getQuantity }} </ul>
-<ul><b>Created At:</b> {{ product.getCreatedAt }} </ul>
+    <h1>{{ product.getTitle }}</h1>
 
-{% if product.getEditedAt != null %}
-    <ul><b>Edited At:</b> {{ product.getEditedAt }} </ul>
-{% endif %}
+        <div class="detail"><b>Category: {{ product.getCategory }}</b></div>
+        <div class="detail"><b>Quantity: {{ product.getQuantity }}</b></div>
+        <div class="detail"><b>Created At: {{ product.getCreatedAt }}</b></div>
+
+        {% if product.getEditedAt != null %}
+            <div class="detail"><b>Edited At: {{ product.getEditedAt }}</b></div>
+        {% endif %}
+
+</div>

@@ -12,23 +12,28 @@
 
         <br/>
 
+
+
         {% if products.getProducts|length > 0 %}
-
-        {% for product in products.getProducts %}
-            <ul>
-                <li><b>Title:</b> <a href="product/{{ product.getId }}">{{ product.getTitle }}</a></li>
-                <li><b>Category:</b> {{ product.getCategory }}</li>
-                <li><b>Quantity:</b> {{ product.getQuantity }}</li>
-            </ul>
-
-        {% endfor %}
+            {% for product in products.getProducts %}
+                <div class="products">
+                    <b>Title:</b> <a class="title" href="product/{{ product.getId }}">{{ product.getTitle }}</a><br/>
+                    <b>Category: {{ product.getCategory }}</b><br/>
+                    <b>Quantity: {{ product.getQuantity }}</b><br/>
+                </div>
+            {% endfor %}
+            {% else %}
+                    <div class="products">
+                        <b>The List of Products Is Empty</b>
+                    </div>
+            {% endif %}
 
         {% else %}
-            <ul><b>The List of Products Is Empty</b></ul>
+                <div class="products">
+                    <b>You Must Be Logged In To View Products</b>
+                </div>
         {% endif %}
 
-    {% else %}
-        <ul><b>You Must Be Logged In To View Products</b></ul>
-    {% endif %}
+
 
 {% endblock %}
