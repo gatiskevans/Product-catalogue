@@ -2,9 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Categories\Categories;
-use App\DD;
-use App\Models\Product;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
 use App\Repositories\ProductsRepository;
@@ -23,8 +20,10 @@ class ProductsController extends ProductsValidator
 
     public function index(): View
     {
-        $products = $this->productsRepository->getAll();
-
+        if(!isset($_SESSION['id'])){
+            return new View('Products/products.twig');
+        }
+        $products = $this->productsRepository->getAll($_SESSION['id']);
         return new View('Products/products.twig', ['products' => $products]);
     }
 
@@ -38,7 +37,7 @@ class ProductsController extends ProductsValidator
         $id = $vars['id'] ?? null;
         if($id === null) Redirect::to('/');
 
-        $product = $this->productsRepository->getOne($id);
+        $product = $this->productsRepository->getOne($id, $_SESSION['id']);
         return new View('Products/product.twig', ['product' => $product]);
     }
 
@@ -47,18 +46,19 @@ class ProductsController extends ProductsValidator
         $id = $vars['id'] ?? null;
         if($id === null) Redirect::to('/');
 
-        $product = $this->productsRepository->getOne($id);
+        $product = $this->productsRepository->getOne($id, $_SESSION['id']);
         return new View('Products/edit.twig', ['product' => $product]);
     }
 
     public function addProduct(): void
     {
         try{
-            $productExists = $this->productsRepository->getByTitle($_POST);
+            $productExists = $this->productsRepository->getByTitle($_POST, $_SESSION['id']);
             $this->validateProduct($_POST, $productExists);
 
-            $this->productsRepository->add($_POST);
-            Redirect::to('/');
+            $this->productsRepository->add($_POST, $_SESSION['id']);
+            $_SESSION['message'] = "Product Added Successfully!";
+            Redirect::to('/add');
 
         } catch(FormValidationException $exception)
         {
@@ -99,7 +99,7 @@ class ProductsController extends ProductsValidator
     {
         try {
             $this->validateSearch($_GET);
-            $products = $this->productsRepository->search($_GET['category']);
+            $products = $this->productsRepository->search($_GET['category'], $_SESSION['id']);
         } catch (FormValidationException $exception)
         {
             $_SESSION['_errors'] = $this->getErrors();

@@ -2,7 +2,6 @@
 
 namespace App\Validation;
 
-use App\DD;
 use App\Models\User;
 
 abstract class UsersValidator

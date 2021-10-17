@@ -1,7 +1,8 @@
-{% if session.message is defined %}
 
+{% if session.message is defined %}
+<div class="response">
     <b style="color: green">{{ session.message }}</b>
 
     <br/>
-
+</div>
 {% endif %}

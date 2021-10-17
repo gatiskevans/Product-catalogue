@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\DD;
 use App\Models\User;
 use App\MySQLConnect\MySQLConnect;
 use PDO;

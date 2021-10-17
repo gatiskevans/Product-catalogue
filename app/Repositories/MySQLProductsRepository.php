@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
@@ -12,11 +11,11 @@ use Ramsey\Uuid\Uuid;
 
 class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
 {
-    public function getOne(string $id): Product
+    public function getOne(string $id, string $userId): Product
     {
-        $sql = "SELECT * FROM products WHERE product_id=?";
+        $sql = "SELECT * FROM products WHERE product_id=? AND user_id=?";
         $statement = $this->connect()->prepare($sql);
-        $statement->execute([$id]);
+        $statement->execute([$id, $userId]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Product(
@@ -25,15 +24,16 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             $result['category'],
             $result['quantity'],
             $result['created_at'],
-            $result['edited_at'],
+            $result['user_id'],
+            $result['edited_at']
         );
     }
 
-    public function getByTitle(array $product): bool
+    public function getByTitle(array $product, string $userId): bool
     {
-        $sql = "SELECT * FROM products WHERE title=?";
+        $sql = "SELECT * FROM products WHERE title=? AND user_id=?";
         $statement = $this->connect()->prepare($sql);
-        $statement->execute([$product['title']]);
+        $statement->execute([$product['title'], $userId]);
 
         if($statement->rowCount() > 0)
         {
@@ -42,14 +42,14 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         return false;
     }
 
-    public function getAll(): ProductsCollection
+    public function getAll(string $userId): ProductsCollection
     {
         $productsCollection = new ProductsCollection();
 
-        $sql = "SELECT * FROM products ORDER BY created_at DESC";
+        $sql = "SELECT * FROM products WHERE user_id=? ORDER BY created_at DESC";
 
         $statement = $this->connect()->prepare($sql);
-        $statement->execute();
+        $statement->execute([$userId]);
 
         foreach($statement->fetchAll(PDO::FETCH_ASSOC) as $row){
             $productsCollection->add(new Product(
@@ -58,22 +58,24 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
                 $row['category'],
                 $row['quantity'],
                 $row['created_at'],
-                $row['edited_at'],
+                $row['user_id'],
+                $row['edited_at']
             ));
         }
 
         return $productsCollection;
     }
 
-    public function add(array $product): void
+    public function add(array $product, string $userId): void
     {
-        $sql = "INSERT INTO products (product_id, title, category, quantity, created_at) VALUES (?,?,?,?,?)";
+        $sql = "INSERT INTO products (product_id, title, category, quantity, created_at, user_id) VALUES (?,?,?,?,?,?)";
         $this->connect()->prepare($sql)->execute([
             Uuid::uuid4(),
             $product['title'],
             $product['category'],
             $product['quantity'],
-            Carbon::now()
+            Carbon::now(),
+            $userId
         ]);
     }
 
@@ -95,19 +97,19 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $this->connect()->prepare($sql)->execute([$id]);
     }
 
-    public function search(string $query): ProductsCollection
+    public function search(string $query, string $userId): ProductsCollection
     {
         $productsCollection = new ProductsCollection();
 
         if($query === 'all')
         {
-            $sql = "SELECT * FROM products ORDER BY created_at DESC";
+            $sql = "SELECT * FROM products WHERE user_id=? ORDER BY created_at DESC";
             $statement = $this->connect()->prepare($sql);
-            $statement->execute();
+            $statement->execute([$userId]);
         } else {
-            $sql = "SELECT * FROM products WHERE category=? ORDER BY created_at DESC";
+            $sql = "SELECT * FROM products WHERE category=? AND user_id=? ORDER BY created_at DESC";
             $statement = $this->connect()->prepare($sql);
-            $statement->execute([$query]);
+            $statement->execute([$query, $userId]);
         }
 
         foreach($statement->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -117,6 +119,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
                 $row['category'],
                 $row['quantity'],
                 $row['created_at'],
+                $row['user_id'],
                 $row['edited_at'],
             ));
         }

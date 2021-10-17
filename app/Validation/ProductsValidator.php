@@ -2,8 +2,6 @@
 
 namespace App\Validation;
 
-use App\DD;
-use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 
 abstract class ProductsValidator

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\DD;
-
 class Product
 {
     private string $id;
@@ -12,6 +10,7 @@ class Product
     private int $quantity;
     private string $createdAt;
     private ?string $editedAt;
+    private string $userId;
 
     public const FRUITS = 'fruits';
     public const SWEETS = 'sweets';
@@ -43,6 +42,7 @@ class Product
         string $category,
         int $quantity,
         string $createdAt,
+        string $userId,
         ?string $editedAt = null
     )
     {
@@ -52,6 +52,7 @@ class Product
         $this->quantity = $quantity;
         $this->createdAt = $createdAt;
         $this->editedAt = $editedAt;
+        $this->userId = $userId;
     }
 
     public function getId(): string
@@ -82,6 +83,11 @@ class Product
     public function getEditedAt(): ?string
     {
         return $this->editedAt;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
     }
 
     public function setCategory(string $category): void

@@ -1,6 +1,5 @@
 <?php
 
-use App\DD;
 use App\Models\Product;
 use App\Twig\View;
 use Twig\Environment;

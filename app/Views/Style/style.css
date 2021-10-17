@@ -98,3 +98,7 @@ a.title:hover {
 .detail {
     padding: 0.5rem 0;
 }
+
+.response {
+    padding-bottom: 0.4rem;
+}
