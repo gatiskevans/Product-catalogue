@@ -102,7 +102,7 @@ class ProductsController extends ProductsValidator
     {
         try {
             $this->validateSearch($_GET);
-            $products = $this->productsRepository->search($_GET['category'], $_SESSION['id']);
+            $products = $this->productsRepository->search($_GET['category'], $_SESSION['id'], $_GET['sort']);
         } catch (FormValidationException $exception)
         {
             $_SESSION['_errors'] = $this->getErrors();

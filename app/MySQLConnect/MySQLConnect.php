@@ -6,14 +6,16 @@ use PDO;
 
 abstract class MySQLConnect
 {
-    private string $host = '127.0.0.1';
-    private string $user = 'root';
-    private string $password = 'root';
-    private string $database = 'product_catalogue';
-
     protected function connect(): PDO
     {
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->database;
-        return new PDO($dsn, $this->user, $this->password);
+        $json = json_decode(file_get_contents('config.json'), true);
+
+        $host = $json['host'];
+        $user = $json['user'];
+        $password = $json['password'];
+        $database = $json['database'];
+
+        $dsn = 'mysql:host=' . $host . ';dbname=' . $database;
+        return new PDO($dsn, $user, $password);
     }
 }

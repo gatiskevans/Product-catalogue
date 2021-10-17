@@ -1,4 +1,6 @@
 <form method="post" action="/delete/{{ product.getId }}">
     <b><label for="delete"></label></b>
-    <button type="submit" id="delete"><div class="delete">Delete</div></button>
+    <button type="submit" id="delete" onclick="confirm('Are you sure?')">
+        <div class="delete">Delete</div>
+    </button>
 </form>

@@ -17,7 +17,7 @@
         {% if products.getProducts|length > 0 %}
             {% for product in products.getProducts %}
                 <div class="products">
-                    <b>Title:</b> <a class="title" href="product/{{ product.getId }}">{{ product.getTitle }}</a><br/>
+                    <b>Product:</b> <a class="title" href="product/{{ product.getId }}">{{ product.getTitle }}</a><br/>
                     <b>Category: {{ product.getCategory }}</b><br/>
                     <b>Quantity: {{ product.getQuantity }}</b><br/>
                 </div>

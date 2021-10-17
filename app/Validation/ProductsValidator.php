@@ -58,6 +58,20 @@ abstract class ProductsValidator
             $this->errors['category'] = "Invalid category";
         }
 
+        [$sortBy, $order] = explode("@", $data['sort']);
+        $values = ['created_at', 'title', 'category', 'quantity', 'edited_at'];
+        $orderOptions = ['ASC', 'DESC'];
+
+        if(!in_array($sortBy, $values))
+        {
+            $this->errors['sort'] = "Invalid Sort Option";
+        }
+
+        if(!in_array($order, $orderOptions))
+        {
+            $this->errors['order'] = "Order Option Is Invalid";
+        }
+
         if(count($this->errors) > 0)
         {
             throw new FormValidationException();

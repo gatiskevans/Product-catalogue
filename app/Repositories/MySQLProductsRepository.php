@@ -97,17 +97,19 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $this->connect()->prepare($sql)->execute([$id]);
     }
 
-    public function search(string $query, string $userId): ProductsCollection
+    public function search(string $query, string $userId, string $sortBy): ProductsCollection
     {
         $productsCollection = new ProductsCollection();
 
+        [$sort, $order] = explode("@", $sortBy);
+
         if($query === 'all')
         {
-            $sql = "SELECT * FROM products WHERE user_id=? ORDER BY created_at DESC";
+            $sql = "SELECT * FROM products WHERE user_id=? ORDER BY {$sort} {$order}";
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$userId]);
         } else {
-            $sql = "SELECT * FROM products WHERE category=? AND user_id=? ORDER BY created_at DESC";
+            $sql = "SELECT * FROM products WHERE category=? AND user_id=? ORDER BY {$sort} {$order}";
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$query, $userId]);
         }

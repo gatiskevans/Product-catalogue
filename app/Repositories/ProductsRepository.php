@@ -13,5 +13,5 @@ interface ProductsRepository
     public function add(array $product, string $userId): void;
     public function edit(array $product, string $id): void;
     public function delete(string $id): void;
-    public function search(string $query, string $userId): ProductsCollection;
+    public function search(string $query, string $userId, string $sortBy): ProductsCollection;
 }
