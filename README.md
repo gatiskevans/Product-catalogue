@@ -5,7 +5,7 @@ Rename config.example.json file to config.json and enter your database configura
 
 Database contents:
 
-Table: products
+    Table: products
 
     Columns: 
 
@@ -23,7 +23,7 @@ Table: products
 
         user_id (varchar(255))
 
-Table: Users
+    Table: Users
 
     Columns:
 
