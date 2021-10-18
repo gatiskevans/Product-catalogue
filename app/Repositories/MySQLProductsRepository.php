@@ -2,11 +2,14 @@
 
 namespace App\Repositories;
 
+use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
+use App\Models\Tag;
 use App\MySQLConnect\MySQLConnect;
 use Carbon\Carbon;
 use PDO;
+use PDOStatement;
 use Ramsey\Uuid\Uuid;
 
 class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
@@ -35,8 +38,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $statement = $this->connect()->prepare($sql);
         $statement->execute([$product['title'], $userId]);
 
-        if($statement->rowCount() > 0)
-        {
+        if ($statement->rowCount() > 0) {
             return true;
         }
         return false;
@@ -51,36 +53,40 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $statement = $this->connect()->prepare($sql);
         $statement->execute([$userId]);
 
-        foreach($statement->fetchAll(PDO::FETCH_ASSOC) as $row){
-            $productsCollection->add(new Product(
-                $row['product_id'],
-                $row['title'],
-                $row['category'],
-                $row['quantity'],
-                $row['created_at'],
-                $row['user_id'],
-                $row['edited_at']
-            ));
-        }
-
-        return $productsCollection;
+        return $this->buildProducts($productsCollection, $statement);
     }
 
     public function add(array $product, string $userId): void
     {
+        $productId = Uuid::uuid4();
+        if (isset($product['tags'])) {
+            $tags = $this->tags()->getByName($product['tags']);
+            $this->tags()->insertTags($productId, $tags);
+        }
+
         $sql = "INSERT INTO products (product_id, title, category, quantity, created_at, user_id) VALUES (?,?,?,?,?,?)";
         $this->connect()->prepare($sql)->execute([
-            Uuid::uuid4(),
+            $productId,
             $product['title'],
             $product['category'],
             $product['quantity'],
             Carbon::now(),
-            $userId
+            $userId,
         ]);
     }
 
     public function edit(array $product, string $id): void
     {
+        $tags = $this->tags()->getAll();
+
+        if (isset($product['tags'])) {
+            $this->tags()->deleteTags($product['id'], $tags);
+            $tags = $this->tags()->getByName($product['tags']);
+            $this->tags()->insertTags($product['id'], $tags);
+        } else {
+            $this->tags()->deleteTags($product['id'], $tags);
+        }
+
         $sql = "UPDATE products SET title=?, category=?, quantity=?, edited_at=? WHERE product_id=?";
         $this->connect()->prepare($sql)->execute([
             $product['title'],
@@ -103,8 +109,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
 
         [$sort, $order] = explode("@", $sortBy);
 
-        if($query === 'all')
-        {
+        if ($query === 'all') {
             $sql = "SELECT * FROM products WHERE user_id=? ORDER BY {$sort} {$order}";
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$userId]);
@@ -113,8 +118,18 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$query, $userId]);
         }
+        return $this->buildProducts($productsCollection, $statement);
+    }
 
-        foreach($statement->fetchAll(PDO::FETCH_ASSOC) as $row){
+    private function tags(): TagsRepository
+    {
+        return new MySQLTagsRepository();
+    }
+
+    private function buildProducts(ProductsCollection $productsCollection, PDOStatement $sqlStatement): ProductsCollection
+    {
+        foreach ($sqlStatement->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            $tags = $this->tags()->toArray($row['product_id']);
             $productsCollection->add(new Product(
                 $row['product_id'],
                 $row['title'],
@@ -122,7 +137,8 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
                 $row['quantity'],
                 $row['created_at'],
                 $row['user_id'],
-                $row['edited_at']
+                $row['edited_at'],
+                $tags
             ));
         }
         return $productsCollection;

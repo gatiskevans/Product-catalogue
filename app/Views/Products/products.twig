@@ -18,19 +18,27 @@
                     <b>Product:</b> <a class="title" href="product/{{ product.getId }}">{{ product.getTitle }}</a><br/>
                     <b>Category: {{ product.getCategory }}</b><br/>
                     <b>Quantity: {{ product.getQuantity }}</b><br/>
+
+                    {% if product.getTags is not empty %}
+                    <b>Tags:
+                        {% for tag in product.getTags %}
+                            {{ tag.getTag }}
+                        {% endfor %}
+                    </b>
+                    {% endif %}
                 </div>
             {% endfor %}
-            {% else %}
-                    <div class="products">
-                        <b>The List of Products Is Empty</b>
-                    </div>
-            {% endif %}
-
         {% else %}
-                <div class="products">
-                    <b>You Must Be Logged In To View Products</b>
-                </div>
+            <div class="products">
+                <b>The List of Products Is Empty</b>
+            </div>
         {% endif %}
+
+    {% else %}
+        <div class="products">
+            <b>You Must Be Logged In To View Products</b>
+        </div>
+    {% endif %}
 
 
 

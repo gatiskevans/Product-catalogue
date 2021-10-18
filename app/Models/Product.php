@@ -11,6 +11,7 @@ class Product
     private string $createdAt;
     private ?string $editedAt;
     private string $userId;
+    private ?array $tags;
 
     public const FRUITS = 'fruits';
     public const SWEETS = 'sweets';
@@ -43,7 +44,9 @@ class Product
         int $quantity,
         string $createdAt,
         string $userId,
-        ?string $editedAt = null
+        ?string $editedAt = null,
+        ?array $tags = null
+
     )
     {
         $this->id = $id;
@@ -53,6 +56,7 @@ class Product
         $this->createdAt = $createdAt;
         $this->editedAt = $editedAt;
         $this->userId = $userId;
+        $this->tags = $tags;
     }
 
     public function getId(): string
@@ -88,6 +92,11 @@ class Product
     public function getUserId(): string
     {
         return $this->userId;
+    }
+
+    public function getTags(): ?array
+    {
+        return $this->tags;
     }
 
     public function setCategory(string $category): void

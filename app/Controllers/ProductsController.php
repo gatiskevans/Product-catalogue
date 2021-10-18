@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\DD;
 use App\Models\Collections\TagsCollection;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
@@ -15,12 +16,10 @@ use App\Validation\ProductsValidator;
 class ProductsController extends ProductsValidator
 {
     private ProductsRepository $productsRepository;
-    private TagsRepository $tagsRepository;
 
     public function __construct()
     {
         $this->productsRepository = new MySQLProductsRepository();
-        $this->tagsRepository = new MySQLTagsRepository();
     }
 
     public function index(): View
@@ -32,10 +31,16 @@ class ProductsController extends ProductsValidator
         return new View('Products/products.twig', ['products' => $products]);
     }
 
+    private function tags(): TagsRepository
+    {
+        return new MySQLTagsRepository();
+    }
+
     public function showAddProduct(): View
     {
         if(!isset($_SESSION['id'])) Redirect::to('/');
-        return new View('Products/add.twig');
+        $tags = $this->tags()->getAll();
+        return new View('Products/add.twig', ['tags' => $tags]);
     }
 
     public function showProduct(array $vars): View
@@ -44,7 +49,7 @@ class ProductsController extends ProductsValidator
         if($id === null || $_SESSION['id'] === null) Redirect::to('/');
 
         $product = $this->productsRepository->getOne($id, $_SESSION['id']);
-        $tags = $this->tagsRepository->getTags($vars['id']);
+        $tags = $this->tags()->getProductTags($vars['id']);
         return new View('Products/product.twig', ['product' => $product, 'tags' => $tags]);
     }
 
@@ -54,8 +59,9 @@ class ProductsController extends ProductsValidator
         if($id === null || $_SESSION['id'] === null) Redirect::to('/');
 
         $product = $this->productsRepository->getOne($id, $_SESSION['id']);
-        $tags = $this->tagsRepository->getTags($vars['id']);
-        return new View('Products/edit.twig', ['product' => $product, 'tags' => $tags]);
+        $tags = $this->tags()->getProductTags($vars['id']);
+        $allTags = $this->tags()->getAll();
+        return new View('Products/edit.twig', ['product' => $product, 'tags' => $tags, 'allTags' => $allTags]);
     }
 
     public function addProduct(): void

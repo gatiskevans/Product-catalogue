@@ -6,7 +6,7 @@ use App\Models\Tag;
 
 class TagsCollection
 {
-    private array $tags;
+    private array $tags = [];
 
     public function __construct(array $tags = [])
     {

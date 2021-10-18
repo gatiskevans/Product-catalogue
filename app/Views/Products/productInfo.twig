@@ -2,20 +2,21 @@
 
     <h1>{{ product.getTitle }}</h1>
 
-        <div class="detail"><b>Category: {{ product.getCategory }}</b></div>
-        <div class="detail"><b>Quantity: {{ product.getQuantity }}</b></div>
-        <div class="detail"><b>Created At: {{ product.getCreatedAt }}</b></div>
+    <div class="detail"><b>Category: {{ product.getCategory }}</b></div>
+    <div class="detail"><b>Quantity: {{ product.getQuantity }}</b></div>
+    <div class="detail"><b>Created At: {{ product.getCreatedAt }}</b></div>
 
-        {% if product.getEditedAt != null %}
-            <div class="detail"><b>Edited At: {{ product.getEditedAt }}</b></div>
-        {% endif %}
+    {% if product.getEditedAt != null %}
+        <div class="detail"><b>Edited At: {{ product.getEditedAt }}</b></div>
+    {% endif %}
 
-        {% if tags is not empty %}
-            <div class="tags">Tags:
+    {% if tags is not empty %}
+        <div class="detail"><b>Tags:
                 {% for tag in tags.getTags %}
                     {{ tag.getTag }}
                 {% endfor %}
-            </div>
-        {% endif %}
+            </b>
+        </div>
+    {% endif %}
 
 </div>
