@@ -45,8 +45,7 @@ class ProductsController extends ProductsValidator
 
     public function showProduct(array $vars): View
     {
-        $id = $vars['id'] ?? null;
-        if($id === null || $_SESSION['id'] === null) Redirect::to('/');
+        $id = $this->productExists($vars);
 
         $product = $this->productsRepository->getOne($id, $_SESSION['id']);
         $tags = $this->tags()->getProductTags($vars['id']);
@@ -55,8 +54,7 @@ class ProductsController extends ProductsValidator
 
     public function showEditProduct(array $vars): View
     {
-        $id = $vars['id'] ?? null;
-        if($id === null || $_SESSION['id'] === null) Redirect::to('/');
+        $id = $this->productExists($vars);
 
         $product = $this->productsRepository->getOne($id, $_SESSION['id']);
         $tags = $this->tags()->getProductTags($vars['id']);
@@ -122,5 +120,12 @@ class ProductsController extends ProductsValidator
             Redirect::to('/');
         }
         return new View('Products/products.twig', ['products' => &$products]);
+    }
+
+    private function productExists(array $vars): string
+    {
+        $id = $vars['id'] ?? null;
+        if($id === null || $_SESSION['id'] === null) Redirect::to('/');
+        return $id;
     }
 }

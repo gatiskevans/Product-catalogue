@@ -25,12 +25,15 @@
         <br/>
 
         <div class="TagsSection">Tags: </div><br/>
+
+        <div class="tags">
         {% for tag in tags.getTags %}
             <label for="{{ tag.getTag }}">{{ tag.getTag }}</label>
             <input type="checkbox" id="{{ tag.getTag }}" name="tags[]" value="{{ tag.getTag }}" />
         {% endfor %}
+        </div>
 
-        <br/><br/>
+        <br/>
 
         <input type="submit" name="submit" class="submit" value="Add Product"/>
     </form>

@@ -102,3 +102,12 @@ a.title:hover {
 .response {
     padding-bottom: 0.4rem;
 }
+
+.tagsSection {
+    padding: 1rem 0 0 0;
+    font-weight: bold;
+}
+
+.tags {
+    width: 14rem;
+}
