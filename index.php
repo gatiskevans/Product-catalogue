@@ -40,7 +40,6 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/profile', 'UsersController@showEdit');
     $r->addRoute('POST', '/profile', 'UsersController@editUser');
     $r->addRoute('POST', '/delete', 'UsersController@deleteUser');
-
 });
 
 // Fetch method and URI from somewhere

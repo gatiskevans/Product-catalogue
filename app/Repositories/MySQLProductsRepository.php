@@ -122,7 +122,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
                 $row['quantity'],
                 $row['created_at'],
                 $row['user_id'],
-                $row['edited_at'],
+                $row['edited_at']
             ));
         }
         return $productsCollection;

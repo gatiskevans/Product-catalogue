@@ -10,4 +10,12 @@
             <div class="detail"><b>Edited At: {{ product.getEditedAt }}</b></div>
         {% endif %}
 
+        {% if tags is not empty %}
+            <div class="tags">Tags:
+                {% for tag in tags.getTags %}
+                    {{ tag.getTag }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
 </div>

@@ -15,7 +15,7 @@ class UsersCollection
 
     public function add(User $user): void
     {
-        $this->users[$user->getId()] = $user;
+        $this->users[$user->getUserId()] = $user;
     }
 
     public function getUsers(): array
@@ -25,6 +25,6 @@ class UsersCollection
 
     public function removeUser(User $user): void
     {
-        unset($this->users[$user->getId()]);
+        unset($this->users[$user->getUserId()]);
     }
 }
