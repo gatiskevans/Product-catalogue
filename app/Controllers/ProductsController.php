@@ -28,7 +28,8 @@ class ProductsController extends ProductsValidator
             return new View('Users/login.twig');
         }
         $products = $this->productsRepository->getAll($_SESSION['id']);
-        return new View('Products/products.twig', ['products' => $products]);
+        $tags = $this->tags()->getAll();
+        return new View('Products/products.twig', ['products' => $products, 'tags' => $tags]);
     }
 
     private function tags(): TagsRepository
@@ -109,7 +110,7 @@ class ProductsController extends ProductsValidator
         Redirect::to('/');
     }
 
-    public function searchByCategory(): View
+    public function searchProducts(): View
     {
         try {
             $this->validateSearch($_GET);
@@ -119,7 +120,16 @@ class ProductsController extends ProductsValidator
             $_SESSION['_errors'] = $this->getErrors();
             Redirect::to('/');
         }
-        return new View('Products/products.twig', ['products' => &$products]);
+        $tags = $this->tags()->getAll();
+        return new View('Products/products.twig', ['products' => &$products, 'tags' => $tags]);
+    }
+
+    public function searchBYTags(): View
+    {
+        if(!isset($_GET['tags'])) Redirect::to('/');
+        $products = $this->productsRepository->searchByTags($_GET['tags'], $_SESSION['id']);
+        $tags = $this->tags()->getAll();
+        return new View('Products/products.twig', ['products' => &$products, 'tags' => $tags]);
     }
 
     private function productExists(array $vars): string

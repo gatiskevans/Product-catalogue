@@ -28,7 +28,8 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('POST', '/edit/{id}', 'ProductsController@editProduct');
 
     $r->addRoute('POST', '/delete/{id}', 'ProductsController@deleteProduct');
-    $r->addRoute('GET', '/search', 'ProductsController@searchByCategory');
+    $r->addRoute('GET', '/search', 'ProductsController@searchProducts');
+    $r->addRoute('GET', '/tags', 'ProductsController@searchByTags');
 
     $r->addRoute('GET', '/login', 'UsersController@showLogin');
     $r->addRoute('POST', '/login', 'UsersController@login');

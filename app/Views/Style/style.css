@@ -111,3 +111,8 @@ a.title:hover {
 .tags {
     width: 14rem;
 }
+
+.searchTags {
+    font-size: 0.8rem;
+    width: 14rem;
+}

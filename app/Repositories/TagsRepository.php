@@ -11,4 +11,5 @@ interface TagsRepository
     public function getByName(array $tags): TagsCollection;
     public function deleteTags(string $productId, TagsCollection $tags): void;
     public function insertTags(string $productId, TagsCollection $tags): void;
+    public function toArray(string $id): ?array;
 }

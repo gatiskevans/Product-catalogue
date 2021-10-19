@@ -1,0 +1,9 @@
+<form action="/tags" method="get">
+    <div class="searchTags">
+        {% for tag in tags.getTags %}
+            <label for="{{ tag.getTag }}">{{ tag.getTag }}</label>
+            <input type="checkbox" id="{{ tag.getTag }}" name="tags[]" value="{{ tag.getTag }}"/>
+        {% endfor %}
+    </div>
+    <input type="submit" name="submit" value="Search By Tags" />
+</form>

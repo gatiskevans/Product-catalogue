@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\DD;
 use App\Models\Collections\ProductsCollection;
+use App\Models\Collections\TagsCollection;
 use App\Models\Product;
-use App\Models\Tag;
 use App\MySQLConnect\MySQLConnect;
 use Carbon\Carbon;
 use PDO;
@@ -118,6 +118,47 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             $statement = $this->connect()->prepare($sql);
             $statement->execute([$query, $userId]);
         }
+        return $this->buildProducts($productsCollection, $statement);
+    }
+
+    public function searchByTags(array $tags, string $userId): ProductsCollection
+    {
+        $productsCollection = new ProductsCollection();
+        $tags = "'" . implode("', '", $tags) . "'";
+
+        $sql = "SELECT tag_id FROM tags WHERE tag IN ({$tags})";
+        $statement = $this->connect()->prepare($sql);
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $tagIds = [];
+        foreach($results as $result)
+        {
+            $tagIds[] = $result['tag_id'];
+        }
+
+        $tagIds = implode(',', $tagIds);
+
+        $sql = "SELECT product_id FROM product_tag WHERE tag_id IN({$tagIds})";
+
+        $statement = $this->connect()->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $productIds = [];
+        foreach($results as $result)
+        {
+            $productIds[] = $result['product_id'];
+        }
+
+        $productIds = array_unique($productIds);
+        $productIds = "'" . implode("', '", $productIds) . "'";
+
+        $sql = "SELECT * FROM products WHERE user_id=? AND product_id IN ({$productIds})";
+        $statement = $this->connect()->prepare($sql);
+        $statement->execute([$userId]);
+
         return $this->buildProducts($productsCollection, $statement);
     }
 
