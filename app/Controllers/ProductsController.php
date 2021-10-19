@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\DD;
-use App\Models\Collections\TagsCollection;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLProductsRepository;
 use App\Repositories\MySQLTagsRepository;

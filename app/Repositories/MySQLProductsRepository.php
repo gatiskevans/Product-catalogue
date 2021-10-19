@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use App\DD;
 use App\Models\Collections\ProductsCollection;
-use App\Models\Collections\TagsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
 use Carbon\Carbon;
@@ -127,10 +125,10 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $tags = "'" . implode("', '", $tags) . "'";
 
         $sql = "SELECT tag_id FROM tags WHERE tag IN ({$tags})";
+
         $statement = $this->connect()->prepare($sql);
         $statement->execute();
-
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->fetchAllQueryResults($sql);
 
         $tagIds = [];
         foreach($results as $result)
@@ -142,9 +140,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
 
         $sql = "SELECT product_id FROM product_tag WHERE tag_id IN({$tagIds})";
 
-        $statement = $this->connect()->prepare($sql);
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->fetchAllQueryResults($sql);
 
         $productIds = [];
         foreach($results as $result)
@@ -183,5 +179,12 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             ));
         }
         return $productsCollection;
+    }
+
+    private function fetchAllQueryResults(string $sql, array $execute = []): array
+    {
+        $statement = $this->connect()->prepare($sql);
+        $statement->execute($execute);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
