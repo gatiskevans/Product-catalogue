@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
@@ -124,36 +125,12 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         $productsCollection = new ProductsCollection();
         $tags = "'" . implode("', '", $tags) . "'";
 
-        $sql = "SELECT tag_id FROM tags WHERE tag IN ({$tags})";
+        $sql = "SELECT * FROM products JOIN product_tag ON 
+                products.product_id = product_tag.product_id JOIN 
+                tags ON tags.tag_id = product_tag.tag_id WHERE tag IN ({$tags})";
 
         $statement = $this->connect()->prepare($sql);
         $statement->execute();
-        $results = $this->fetchAllQueryResults($sql);
-
-        $tagIds = [];
-        foreach($results as $result)
-        {
-            $tagIds[] = $result['tag_id'];
-        }
-
-        $tagIds = implode(',', $tagIds);
-
-        $sql = "SELECT product_id FROM product_tag WHERE tag_id IN({$tagIds})";
-
-        $results = $this->fetchAllQueryResults($sql);
-
-        $productIds = [];
-        foreach($results as $result)
-        {
-            $productIds[] = $result['product_id'];
-        }
-
-        $productIds = array_unique($productIds);
-        $productIds = "'" . implode("', '", $productIds) . "'";
-
-        $sql = "SELECT * FROM products WHERE user_id=? AND product_id IN ({$productIds})";
-        $statement = $this->connect()->prepare($sql);
-        $statement->execute([$userId]);
 
         return $this->buildProducts($productsCollection, $statement);
     }
@@ -179,12 +156,5 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
             ));
         }
         return $productsCollection;
-    }
-
-    private function fetchAllQueryResults(string $sql, array $execute = []): array
-    {
-        $statement = $this->connect()->prepare($sql);
-        $statement->execute($execute);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
