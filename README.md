@@ -5,4 +5,4 @@ Rename config.example.json file to config.json and enter your database configura
 
 Database contents:
 
-* [Products Catalogue Schema](https://github.com/gatiskevans/Product-catalogue/blob/main/Schema/products_catalogue.sql)
+* [Products Catalogue Schema](https://github.com/gatiskevans/Product-catalogue/blob/main/schema/products_catalogue.sql)
