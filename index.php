@@ -1,5 +1,8 @@
 <?php
 
+use App\DD;
+use App\Middleware\Handlers\AuthorisedMiddleware;
+use App\Middleware\Handlers\ProcessInputMiddleware;
 use App\Models\Product;
 use App\Twig\View;
 use Twig\Environment;
@@ -65,6 +68,32 @@ switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::FOUND:
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
+
+        $middlewares = [
+            'UsersController@showLogin' => [
+                AuthorisedMiddleware::class
+            ],
+            'UsersController@login' => [
+                AuthorisedMiddleware::class,
+                ProcessInputMiddleware::class
+            ],
+            'UsersController@showRegistration' => [
+                AuthorisedMiddleware::class
+            ],
+            'UsersController@registerUser' => [
+                AuthorisedMiddleware::class,
+                ProcessInputMiddleware::class
+            ]
+        ];
+
+        if(isset($middlewares[$handler]))
+        {
+            foreach($middlewares[$handler] as $middleware)
+            {
+                $middleware = new $middleware();
+                $middleware->handle();
+            }
+        }
 
         [$controller, $method] = explode('@', $handler);
         $controller = "App\\Controllers\\" . $controller;

@@ -22,13 +22,11 @@ class UsersController extends UsersValidator
 
     public function showLogin(): View
     {
-        if(isset($_SESSION['id'])) Redirect::to('/');
         return new View('Users/login.twig');
     }
 
     public function showRegistration(): View
     {
-        if(isset($_SESSION['id'])) Redirect::to('/');
         return new View('Users/register.twig');
     }
 

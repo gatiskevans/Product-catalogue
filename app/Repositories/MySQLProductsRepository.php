@@ -120,7 +120,7 @@ class MySQLProductsRepository extends MySQLConnect implements ProductsRepository
         return $this->buildProducts($productsCollection, $statement);
     }
 
-    public function searchByTags(array $tags, string $userId): ProductsCollection
+    public function searchByTags(array $tags): ProductsCollection
     {
         $productsCollection = new ProductsCollection();
         $tags = "'" . implode("', '", $tags) . "'";
