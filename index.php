@@ -2,6 +2,7 @@
 
 use App\DD;
 use App\Middleware\Handlers\AuthorisedMiddleware;
+use App\Middleware\Handlers\LoggedInMiddleware;
 use App\Middleware\Handlers\ProcessInputMiddleware;
 use App\Models\Product;
 use App\Twig\View;
@@ -83,6 +84,45 @@ switch ($routeInfo[0]) {
             'UsersController@registerUser' => [
                 AuthorisedMiddleware::class,
                 ProcessInputMiddleware::class
+            ],
+            'ProductsController@showProduct' => [
+                LoggedInMiddleware::class
+            ],
+            'ProductsController@showEditProduct' => [
+                LoggedInMiddleware::class
+            ],
+            'ProductsController@editProduct' => [
+                LoggedInMiddleware::class,
+                ProcessInputMiddleware::class
+            ],
+            'ProductsController@deleteProduct' => [
+                LoggedInMiddleware::class
+            ],
+            'ProductsController@showAddProduct' => [
+                LoggedInMiddleware::class
+            ],
+            'ProductsController@addProduct' => [
+                LoggedInMiddleware::class,
+                ProcessInputMiddleware::class
+            ],
+            'ProductsController@searchProducts' => [
+                LoggedInMiddleware::class
+            ],
+            'ProductsController@searchByTags' => [
+                LoggedInMiddleware::class
+            ],
+            'UsersController@logout' => [
+                LoggedInMiddleware::class
+            ],
+            'UsersController@showEdit' => [
+                LoggedInMiddleware::class
+            ],
+            'UsersController@editUser' => [
+                LoggedInMiddleware::class,
+                ProcessInputMiddleware::class
+            ],
+            'UsersController@deleteUser' => [
+                LoggedInMiddleware::class
             ]
         ];
 

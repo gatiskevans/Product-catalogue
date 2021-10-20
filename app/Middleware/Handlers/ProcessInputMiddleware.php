@@ -10,6 +10,7 @@ class ProcessInputMiddleware implements Middleware
     {
         foreach($_POST as $key => $data)
         {
+            if($_POST['tags']) continue;
             $_POST[$key] = trim($data);
         }
     }
