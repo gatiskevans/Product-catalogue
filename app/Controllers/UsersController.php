@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\DD;
 use App\Models\User;
 use App\Redirect\Redirect;
 use App\Repositories\MySQLUsersRepository;
@@ -15,9 +16,9 @@ class UsersController extends UsersValidator
 {
     private UsersRepository $usersRepository;
 
-    public function __construct()
+    public function __construct(array $container)
     {
-        $this->usersRepository = new MySQLUsersRepository();
+        $this->usersRepository = new $container[UsersRepository::class];
     }
 
     public function showLogin(): View

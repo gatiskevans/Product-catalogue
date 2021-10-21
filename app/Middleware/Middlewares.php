@@ -59,12 +59,3 @@ $middlewares = [
         LoggedInMiddleware::class
     ]
 ];
-
-if(isset($middlewares[$handler]))
-{
-    foreach($middlewares[$handler] as $middleware)
-    {
-        $middleware = new $middleware();
-        $middleware->handle();
-    }
-}

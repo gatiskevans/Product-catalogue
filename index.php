@@ -1,7 +1,12 @@
 <?php
 
 use App\DD;
+use App\Container\Container;
 use App\Models\Product;
+use App\Repositories\MySQLProductsRepository;
+use App\Repositories\MySQLUsersRepository;
+use App\Repositories\ProductsRepository;
+use App\Repositories\UsersRepository;
 use App\Twig\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -9,6 +14,10 @@ use Twig\Loader\FilesystemLoader;
 require 'vendor/autoload.php';
 
 session_start();
+
+$container = new Container();
+$container->register(UsersRepository::class, new MySQLUsersRepository());
+$container->register(ProductsRepository::class, new MySQLProductsRepository());
 
 //Twig Implementation
 $loader = new FilesystemLoader('app/Views');
@@ -69,10 +78,21 @@ switch ($routeInfo[0]) {
 
         require_once 'app/Middleware/Middlewares.php';
 
+        if(isset($middlewares[$handler]))
+        {
+            foreach($middlewares[$handler] as $middleware)
+            {
+                $middleware = new $middleware();
+                $middleware->handle();
+            }
+        }
+
         [$controller, $method] = explode('@', $handler);
         $controller = "App\\Controllers\\" . $controller;
-        $controller = new $controller;
+        $controller = new $controller($container->getContainer());
         $response = $controller->$method($vars);
+
+
 
         if ($response instanceof View) {
             echo $twigEngine->render($response->getTemplate(), $response->getVariables());

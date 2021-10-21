@@ -15,9 +15,9 @@ class ProductsController extends ProductsValidator
 {
     private ProductsRepository $productsRepository;
 
-    public function __construct()
+    public function __construct(array $container)
     {
-        $this->productsRepository = new MySQLProductsRepository();
+        $this->productsRepository = $container[ProductsRepository::class];
     }
 
     public function index(): View
