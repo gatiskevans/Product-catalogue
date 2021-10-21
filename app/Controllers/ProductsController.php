@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Redirect\Redirect;
-use App\Repositories\MySQLProductsRepository;
 use App\Repositories\MySQLTagsRepository;
 use App\Repositories\ProductsRepository;
 use App\Repositories\TagsRepository;

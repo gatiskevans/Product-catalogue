@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\DD;
 use App\Models\User;
 use App\Redirect\Redirect;
-use App\Repositories\MySQLUsersRepository;
 use App\Repositories\UsersRepository;
 use App\Twig\View;
 use App\Validation\FormValidationException;
