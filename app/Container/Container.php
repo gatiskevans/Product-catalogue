@@ -11,11 +11,6 @@ class Container
         $this->container[$interface] = $newInstance;
     }
 
-    public function getInstance(string $key): object
-    {
-        return $this->container[$key];
-    }
-
     public function getContainer(): array
     {
         return $this->container;
