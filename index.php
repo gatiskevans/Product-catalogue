@@ -76,7 +76,7 @@ switch ($routeInfo[0]) {
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
 
-        require_once 'app/Middleware/Middlewares.php';
+        require_once 'app/Middleware/MiddlewareRegister.php';
 
         if(isset($middlewares[$handler]))
         {
