@@ -10,14 +10,20 @@ use App\Repositories\UsersRepository;
 use App\Twig\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use App\Controllers\UsersController;
 
 require 'vendor/autoload.php';
 
 session_start();
 
-$container = new Container();
-$container->register(UsersRepository::class, new MySQLUsersRepository());
-$container->register(ProductsRepository::class, new MySQLProductsRepository());
+//$container = new Container();
+//$container->register(UsersRepository::class, new MySQLUsersRepository());
+//$container->register(ProductsRepository::class, new MySQLProductsRepository());
+
+$container = new DI\Container();
+
+$usersController = $container->get('App\Controllers\UsersController');
+$productsController = $container->get('App\Controllers\ProductsController');
 
 //Twig Implementation
 $loader = new FilesystemLoader('app/Views');
@@ -89,10 +95,8 @@ switch ($routeInfo[0]) {
 
         [$controller, $method] = explode('@', $handler);
         $controller = "App\\Controllers\\" . $controller;
-        $controller = new $controller($container->getContainer());
+        $controller = new $controller();
         $response = $controller->$method($vars);
-
-
 
         if ($response instanceof View) {
             echo $twigEngine->render($response->getTemplate(), $response->getVariables());

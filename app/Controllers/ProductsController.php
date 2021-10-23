@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Redirect\Redirect;
+use App\Repositories\MySQLProductsRepository;
 use App\Repositories\MySQLTagsRepository;
 use App\Repositories\ProductsRepository;
 use App\Repositories\TagsRepository;
@@ -14,9 +15,9 @@ class ProductsController extends ProductsValidator
 {
     private ProductsRepository $productsRepository;
 
-    public function __construct(array $container)
+    public function __construct(MySQLProductsRepository $productsRepository)
     {
-        $this->productsRepository = $container[ProductsRepository::class];
+        $this->productsRepository = $productsRepository;
     }
 
     public function index(): View
