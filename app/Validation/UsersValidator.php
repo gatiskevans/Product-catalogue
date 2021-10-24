@@ -2,6 +2,7 @@
 
 namespace App\Validation;
 
+use App\Messages\Messages;
 use App\Models\User;
 
 abstract class UsersValidator
@@ -17,47 +18,47 @@ abstract class UsersValidator
     {
         if($user && !isset($_SESSION['id']))
         {
-            $this->errors['user'] = "User with this email already exists";
+            $this->errors['user'] = Messages::USER_EXISTS;
         }
 
         if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
         {
-            $this->errors['email'] = "Email format is incorrect";
+            $this->errors['email'] = Messages::INVALID_EMAIL;
         }
 
         if(empty($data['email']))
         {
-            $this->errors['email'] = "Email is required";
+            $this->errors['email'] = Messages::EMAIL_REQUIRED;
         }
 
         if(empty($data['name']))
         {
-            $this->errors['name'] = "Name is required";
+            $this->errors['name'] = Messages::NAME_REQUIRED;
         }
 
         if(strlen($data['name']) > 100)
         {
-            $this->errors['name'] = "Name is too long";
+            $this->errors['name'] = Messages::NAME_TOO_LONG;
         }
 
         if($data['password'] !== $data['password_confirmation'])
         {
-            $this->errors['password'] = "Passwords do not match";
+            $this->errors['password'] = Messages::PASSWORDS_DONT_MATCH;
         }
 
         if(strlen($data['password']) < 6)
         {
-            $this->errors['password'] = "Password must be at least 6 characters long";
+            $this->errors['password'] = Messages::PASSWORD_TOO_SHORT;
         }
 
         if(empty($data['password']))
         {
-            $this->errors['password'] = "Password is required";
+            $this->errors['password'] = Messages::PASSWORD_REQUIRED;
         }
 
         if(empty($data['password_confirmation']))
         {
-            $this->errors['password_confirmation'] = "Password confirmation is required";
+            $this->errors['password_confirmation'] = Messages::PASSWORD_CONFIRM_REQUIRED;
         }
 
         if(count($this->errors) > 0)
@@ -70,27 +71,27 @@ abstract class UsersValidator
     {
         if($user === null)
         {
-            $this->errors['email'] = "Cannot find user with this email";
+            $this->errors['email'] = Messages::USER_DONT_EXIST;
         }
 
         if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
         {
-            $this->errors['email'] = "Email format is incorrect";
+            $this->errors['email'] = Messages::INVALID_EMAIL;
         }
 
         if(empty($data['email']))
         {
-            $this->errors['email'] = "Email is required";
+            $this->errors['email'] = Messages::EMAIL_REQUIRED;
         }
 
         if($user && !password_verify($data['password'], $user->getPassword()) || $data['password'] < 6)
         {
-            $this->errors['password'] = "Wrong password";
+            $this->errors['password'] = Messages::WRONG_PASSWORD;
         }
 
         if(empty($data['password']))
         {
-            $this->errors['password'] = "Password is required";
+            $this->errors['password'] = Messages::PASSWORD_REQUIRED;
         }
 
         if(count($this->errors) > 0)

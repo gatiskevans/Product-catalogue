@@ -2,6 +2,7 @@
 
 namespace App\Validation;
 
+use App\Messages\Messages;
 use App\Models\Product;
 
 abstract class ProductsValidator
@@ -17,32 +18,32 @@ abstract class ProductsValidator
     {
         if($productExists)
         {
-           $this->errors['title'] = TITLE_EXISTS;
+           $this->errors['title'] = Messages::TITLE_EXISTS;
         }
 
         if(empty($data['title']))
         {
-            $this->errors['title'] = TITLE_REQUIRED;
+            $this->errors['title'] = Messages::TITLE_REQUIRED;
         }
 
         if(empty($data['category']))
         {
-            $this->errors['category'] = CATEGORY_REQUIRED;
+            $this->errors['category'] = Messages::CATEGORY_REQUIRED;
         }
 
         if(!is_numeric($data['quantity']))
         {
-            $this->errors['quantity'] = QUANTITY_NUMERIC;
+            $this->errors['quantity'] = Messages::QUANTITY_NUMERIC;
         }
 
         if(empty($data['quantity']))
         {
-            $this->errors['quantity'] = QUANTITY_REQUIRED;
+            $this->errors['quantity'] = Messages::QUANTITY_REQUIRED;
         }
 
         if(!in_array(strtolower($data['category']), Product::CATEGORIES))
         {
-            $this->errors['category'] = INVALID_CATEGORY;
+            $this->errors['category'] = Messages::INVALID_CATEGORY;
         }
 
         if(count($this->errors) > 0)
@@ -55,7 +56,7 @@ abstract class ProductsValidator
     {
         if(!in_array(strtolower($data['category']), Product::CATEGORIES) && $data['category'] !== 'all')
         {
-            $this->errors['category'] = INVALID_CATEGORY;
+            $this->errors['category'] = Messages::INVALID_CATEGORY;
         }
 
         [$sortBy, $order] = explode("@", $data['sort']);
@@ -64,12 +65,12 @@ abstract class ProductsValidator
 
         if(!in_array($sortBy, $values))
         {
-            $this->errors['sort'] = INVALID_SORT;
+            $this->errors['sort'] = Messages::INVALID_SORT;
         }
 
         if(!in_array($order, $orderOptions))
         {
-            $this->errors['order'] = INVALID_ORDER;
+            $this->errors['order'] = Messages::INVALID_ORDER;
         }
 
         if(count($this->errors) > 0)
