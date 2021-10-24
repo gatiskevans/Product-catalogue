@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 use App\DD;
+use App\Messages\Messages;
 use App\Models\User;
 use App\Redirect\Redirect;
-use App\Repositories\MySQLUsersRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\UsersRepository\MySQLUsersRepository;
+use App\Repositories\UsersRepository\UsersRepository;
 use App\Twig\View;
 use App\Validation\FormValidationException;
 use App\Validation\UsersValidator;
@@ -47,7 +48,7 @@ class UsersController extends UsersValidator
             $_SESSION['id'] = $user->getUserId();
             $_SESSION['name'] = $user->getName();
             $_SESSION['email'] = $user->getEmail();
-            $_SESSION['message'] = LOGIN_SUCCESS;
+            $_SESSION['message'] = Messages::LOGIN_SUCCESS;
             Redirect::to('/');
         } catch(FormValidationException $exception)
         {
@@ -69,7 +70,7 @@ class UsersController extends UsersValidator
                 password_hash($_POST['password'], PASSWORD_DEFAULT)
             ));
 
-            $_SESSION['message'] = REGISTRATION_SUCCESS;
+            $_SESSION['message'] = Messages::REGISTRATION_SUCCESS;
 
             Redirect::to('/login');
         } catch (FormValidationException $exception)
@@ -86,7 +87,7 @@ class UsersController extends UsersValidator
             $user = $this->usersRepository->getById($_SESSION['id']);
             $this->validateUserData($_POST, $user);
             $this->usersRepository->edit($_POST, $_SESSION['id']);
-            $_SESSION['message'] = USER_UPDATE_SUCCESS;
+            $_SESSION['message'] = Messages::USER_UPDATE_SUCCESS;
             Redirect::to('/profile');
         } catch (FormValidationException $exception)
         {
@@ -99,7 +100,7 @@ class UsersController extends UsersValidator
     public function deleteUser(): void
     {
         $this->usersRepository->delete($_SESSION['id']);
-        $_SESSION['message'] = USER_DELETE_SUCCESS;
+        $_SESSION['message'] = Messages::USER_DELETE_SUCCESS;
         $this->logout();
     }
 

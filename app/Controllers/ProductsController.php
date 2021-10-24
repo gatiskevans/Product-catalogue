@@ -2,11 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Messages\Messages;
 use App\Redirect\Redirect;
-use App\Repositories\MySQLProductsRepository;
-use App\Repositories\MySQLTagsRepository;
-use App\Repositories\ProductsRepository;
-use App\Repositories\TagsRepository;
+use App\Repositories\ProductsRepository\MySQLProductsRepository;
+use App\Repositories\ProductsRepository\ProductsRepository;
+use App\Repositories\TagsRepository\MySQLTagsRepository;
+use App\Repositories\TagsRepository\TagsRepository;
 use App\Twig\View;
 use App\Validation\FormValidationException;
 use App\Validation\ProductsValidator;
@@ -68,7 +69,7 @@ class ProductsController extends ProductsValidator
             $this->validateProduct($_POST, $productExists);
 
             $this->productsRepository->add($_POST, $_SESSION['id']);
-            $_SESSION['message'] = PRODUCT_ADD_SUCCESS;
+            $_SESSION['message'] = Messages::PRODUCT_ADD_SUCCESS;
             Redirect::to('/add');
 
         } catch(FormValidationException $exception)
@@ -88,7 +89,7 @@ class ProductsController extends ProductsValidator
             $this->validateProduct($_POST);
 
             $this->productsRepository->edit($_POST, $id);
-            $_SESSION['message'] = PRODUCT_UPDATE_SUCCESS;
+            $_SESSION['message'] = Messages::PRODUCT_UPDATE_SUCCESS;
             $location = "/product/" . $id;
             Redirect::to($location);
         } catch(FormValidationException $exception)

@@ -6,7 +6,7 @@ use App\Twig\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 session_start();
 
