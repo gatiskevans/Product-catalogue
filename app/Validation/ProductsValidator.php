@@ -17,32 +17,32 @@ abstract class ProductsValidator
     {
         if($productExists)
         {
-           $this->errors['title'] = "Product already exists.";
+           $this->errors['title'] = TITLE_EXISTS;
         }
 
         if(empty($data['title']))
         {
-            $this->errors['title'] = "Title is required";
+            $this->errors['title'] = TITLE_REQUIRED;
         }
 
         if(empty($data['category']))
         {
-            $this->errors['category'] = "Category is required";
+            $this->errors['category'] = CATEGORY_REQUIRED;
         }
 
         if(!is_numeric($data['quantity']))
         {
-            $this->errors['quantity'] = "Quantity must be a number";
+            $this->errors['quantity'] = QUANTITY_NUMERIC;
         }
 
         if(empty($data['quantity']))
         {
-            $this->errors['quantity'] = "Quantity is required";
+            $this->errors['quantity'] = QUANTITY_REQUIRED;
         }
 
         if(!in_array(strtolower($data['category']), Product::CATEGORIES))
         {
-            $this->errors['category'] = "Invalid category";
+            $this->errors['category'] = INVALID_CATEGORY;
         }
 
         if(count($this->errors) > 0)
@@ -55,7 +55,7 @@ abstract class ProductsValidator
     {
         if(!in_array(strtolower($data['category']), Product::CATEGORIES) && $data['category'] !== 'all')
         {
-            $this->errors['category'] = "Invalid category";
+            $this->errors['category'] = INVALID_CATEGORY;
         }
 
         [$sortBy, $order] = explode("@", $data['sort']);
@@ -64,12 +64,12 @@ abstract class ProductsValidator
 
         if(!in_array($sortBy, $values))
         {
-            $this->errors['sort'] = "Invalid Sort Option";
+            $this->errors['sort'] = INVALID_SORT;
         }
 
         if(!in_array($order, $orderOptions))
         {
-            $this->errors['order'] = "Order Option Is Invalid";
+            $this->errors['order'] = INVALID_ORDER;
         }
 
         if(count($this->errors) > 0)

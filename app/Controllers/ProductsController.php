@@ -68,7 +68,7 @@ class ProductsController extends ProductsValidator
             $this->validateProduct($_POST, $productExists);
 
             $this->productsRepository->add($_POST, $_SESSION['id']);
-            $_SESSION['message'] = "Product Added Successfully!";
+            $_SESSION['message'] = PRODUCT_ADD_SUCCESS;
             Redirect::to('/add');
 
         } catch(FormValidationException $exception)
@@ -88,7 +88,7 @@ class ProductsController extends ProductsValidator
             $this->validateProduct($_POST);
 
             $this->productsRepository->edit($_POST, $id);
-            $_SESSION['message'] = "Edited Successfully!";
+            $_SESSION['message'] = PRODUCT_UPDATE_SUCCESS;
             $location = "/product/" . $id;
             Redirect::to($location);
         } catch(FormValidationException $exception)
@@ -125,7 +125,7 @@ class ProductsController extends ProductsValidator
     public function searchBYTags(): View
     {
         if(!isset($_GET['tags'])) Redirect::to('/');
-        $products = $this->productsRepository->searchByTags($_GET['tags'], $_SESSION['id']);
+        $products = $this->productsRepository->searchByTags($_GET['tags']);
         $tags = $this->tags()->getAll();
         return new View('Products/products.twig', ['products' => &$products, 'tags' => $tags]);
     }
