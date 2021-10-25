@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Redirect\Redirect;
 use App\Repositories\UsersRepository\MySQLUsersRepository;
 use App\Repositories\UsersRepository\UsersRepository;
+use App\Services\AddMessages\AddMessageService;
 use App\Twig\View;
 use App\Validation\FormValidationException;
 use App\Validation\UsersValidator;
@@ -16,9 +17,14 @@ use Ramsey\Uuid\Uuid;
 class UsersController extends UsersValidator
 {
     private UsersRepository $usersRepository;
+    private AddMessageService $addMessageService;
 
-    public function __construct(MySQLUsersRepository $usersRepository)
+    public function __construct(
+        UsersRepository $usersRepository,
+        AddMessageService $addMessageService
+    )
     {
+        $this->addMessageService = $addMessageService;
         $this->usersRepository = $usersRepository;
     }
 
@@ -48,7 +54,7 @@ class UsersController extends UsersValidator
             $_SESSION['id'] = $user->getUserId();
             $_SESSION['name'] = $user->getName();
             $_SESSION['email'] = $user->getEmail();
-            $_SESSION['message'] = Messages::LOGIN_SUCCESS;
+            $this->addMessageService->add(Messages::LOGIN_SUCCESS);
             Redirect::to('/');
         } catch(FormValidationException $exception)
         {
@@ -70,7 +76,7 @@ class UsersController extends UsersValidator
                 password_hash($_POST['password'], PASSWORD_DEFAULT)
             ));
 
-            $_SESSION['message'] = Messages::REGISTRATION_SUCCESS;
+            $this->addMessageService->add(Messages::REGISTRATION_SUCCESS);
 
             Redirect::to('/login');
         } catch (FormValidationException $exception)
@@ -87,7 +93,7 @@ class UsersController extends UsersValidator
             $user = $this->usersRepository->getById($_SESSION['id']);
             $this->validateUserData($_POST, $user);
             $this->usersRepository->edit($_POST, $_SESSION['id']);
-            $_SESSION['message'] = Messages::USER_UPDATE_SUCCESS;
+            $this->addMessageService->add(Messages::USER_UPDATE_SUCCESS);
             Redirect::to('/profile');
         } catch (FormValidationException $exception)
         {
@@ -100,7 +106,7 @@ class UsersController extends UsersValidator
     public function deleteUser(): void
     {
         $this->usersRepository->delete($_SESSION['id']);
-        $_SESSION['message'] = Messages::USER_DELETE_SUCCESS;
+        $this->addMessageService->add(Messages::USER_DELETE_SUCCESS);
         $this->logout();
     }
 

@@ -6,6 +6,8 @@ use App\DD;
 use App\Models\Collections\ProductsCollection;
 use App\Models\Product;
 use App\MySQLConnect\MySQLConnect;
+use App\Repositories\TagsRepository\MySQLTagsRepository;
+use App\Repositories\TagsRepository\TagsRepository;
 use Carbon\Carbon;
 use PDO;
 use PDOStatement;

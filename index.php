@@ -2,6 +2,12 @@
 
 use App\DD;
 use App\Models\Product;
+use App\Repositories\ProductsRepository\MySQLProductsRepository;
+use App\Repositories\ProductsRepository\ProductsRepository;
+use App\Repositories\TagsRepository\MySQLTagsRepository;
+use App\Repositories\TagsRepository\TagsRepository;
+use App\Repositories\UsersRepository\MySQLUsersRepository;
+use App\Repositories\UsersRepository\UsersRepository;
 use App\Twig\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -12,6 +18,9 @@ session_start();
 
 //PHP-DI Implementation for Dependency Injection
 $container = new DI\Container();
+$container->set(UsersRepository::class, \DI\create(MySQLUsersRepository::class));
+$container->set(ProductsRepository::class, \DI\create(MySQLProductsRepository::class));
+$container->set(TagsRepository::class, \DI\create(MySQLTagsRepository::class));
 
 //Twig Implementation
 $loader = new FilesystemLoader('app/Views');

@@ -17,6 +17,7 @@ class Messages
     const REGISTRATION_SUCCESS = "Registration Successful!";
     const USER_UPDATE_SUCCESS = "Information Updated Successfully!";
     const USER_DELETE_SUCCESS = "User Deleted Successfully!";
+    const PRODUCT_DELETE_SUCCESS = "Product Deleted Successfully!";
 
     const PRODUCT_ADD_SUCCESS = "Product Added Successfully!";
     const PRODUCT_UPDATE_SUCCESS = "Edited Successfully!";
