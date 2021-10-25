@@ -32,7 +32,6 @@ use App\Validation\ProductsValidator;
 
 class ProductsController extends ProductsValidator
 {
-    private ProductsRepository $productsRepository;
     private ListAllProductsService $listAllProductsService;
     private AddMessageService $addMessageService;
     private AddProductService $addProductService;
@@ -45,7 +44,6 @@ class ProductsController extends ProductsValidator
     private SearchByTagsService $searchByTagsService;
 
     public function __construct(
-        ProductsRepository $productsRepository,
         ListAllProductsService $listAllProductsService,
         AddMessageService $addMessageService,
         AddProductService $addProductService,
@@ -58,7 +56,6 @@ class ProductsController extends ProductsValidator
         SearchByTagsService $searchByTagsService
     )
     {
-        $this->productsRepository = $productsRepository;
         $this->listAllProductsService = $listAllProductsService;
         $this->addMessageService = $addMessageService;
         $this->addProductService = $addProductService;
